@@ -2,9 +2,11 @@
 
 GUI based Zoom automation script
 
-## How to
+## Requirements
+* Python-3.6 and above
 
+## How to Run
 #### Only initial
 - run install-dependecys.py
-
+----------------------------
 #### run main.py
