@@ -8,5 +8,5 @@ GUI based Zoom automation script
 ## How to Run
 #### Only initial
 - run install-dependecys.py
-----------------------------
+
 #### run main.py
