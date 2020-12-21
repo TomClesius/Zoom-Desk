@@ -8,41 +8,12 @@ import subprocess
 import time
 import pyautogui
 
-root = Tk()
+root = Tk(className="zoom-desk")
 
 btn = [] #creates list to store the buttons in
 x = [] #creates list to store the x buttons in
 
-
 SessionFrame = LabelFrame(root,padx=10,pady=10)
-
-
-
-# TODO safe in file
-ZoomPath = []
-
-def addZoomPath():
-    filename = askopenfilename(initialdir="/", title="Select File", filetypes = ((".exe","*.exe"),("all","*.*"))) 
-    ZoomPath.append(filename)
-
-##############ZoomCode####################
-def zoomClass(meet_id, password):
-    pyautogui.press('ESC',interval=0.2)
-
-    subprocess.Popen(ZoomPath[0],stdout=subprocess.PIPE)
-    
-    time.sleep(1)
-    
-    xy = pyautogui.locateCenterOnScreen('buttons\\join_button.png' ,confidence=0.8)
-    pyautogui.moveTo(xy)
-    pyautogui.click()
-    time.sleep(0.2)
-    
-    pyautogui.press('enter',interval=0.2)
-    pyautogui.write(meet_id)
-    pyautogui.press('enter',interval=0.2)
-    pyautogui.write(password)
-    pyautogui.press('enter',interval=0.2)
 
 
 abspath = pathlib.Path("data.dat").absolute()
@@ -54,12 +25,43 @@ def load():
     data = pickle.load(open(str(abspath),"rb"))
     return data
 
+
+def addZoomPath():
+    data = load()
+    if not data[3] or data[3][0] == '':
+        filename = askopenfilename(initialdir="/", title="Select File", filetypes = ((".exe","*.exe"),("all","*.*"))) 
+        data[3].append(filename) 
+        safe(data)
+
+
+
+##############ZoomCode####################
+def zoomClass(meet_id, password):
+    data = load()
+    pyautogui.press('ESC',interval=0.2)
+
+    subprocess.Popen(data[3][0],stdout=subprocess.PIPE)
+    
+    time.sleep(1)
+    
+    xy = pyautogui.locateCenterOnScreen('buttons\\join_button.png' ,confidence=0.8)
+    pyautogui.moveTo(xy)
+    
+    12513526262
+    time.sleep(0.2)
+    pyautogui.moveTo(xy)
+    pyautogui.click()
+    time.sleep(0.2)
+    
+    pyautogui.press('enter',interval=0.2)
+    pyautogui.write(meet_id)
+    pyautogui.press('enter',interval=0.2)
+    pyautogui.write(password)
+    pyautogui.press('enter',interval=0.2)
+
+
 #TODO index out of range BUG
 def delete(index):
-    if(len(btn) == 1):
-        SessionFrame.pack_forget()
-
-
     btn[index].destroy()
     x[index].destroy()
     data = load()
@@ -91,15 +93,13 @@ def iniBtns():
 ##############Add Button function####################
 def addBtns():
     print(len(btn))
-    if(len(btn) == 0):
-        SessionFrame.pack(padx=10,pady=10,)
     data = load()
     data[2].append(str(password_value.get())) 
     data[1].append(str(name_value.get())) 
     data[0].append(str(id_value.get()))  
 
     btn.append(Button(SessionFrame, text=data[0][-1],padx=25, command=lambda c= len(data[0])-1: zoomClass(data[1][c],data[2][c])))
-    x.append(Button(SessionFrame, text="x",padx=5, command=lambda c= len(x)-1: delete(c)))
+    x.append(Button(SessionFrame, text="x",padx=5, command=lambda c= len(x): delete(c)))
    
     btn[-1].grid(row=len(btn)+1,column=0) #this packs the buttons
     x[-1].grid(row=len(x)+1,column=1)
@@ -107,10 +107,6 @@ def addBtns():
     safe(data)
 
 
-DepFrame = LabelFrame(root,padx=10,pady=10)
-DepFrame.pack(padx=10,pady=10)
-FileBtn = Button(DepFrame, text = "Zoom Path" ,command= 0,width=10) ##TODO COMMAND # idea no button- automatic command when nothig saved
-FileBtn.pack()
 #--------------------------------------------------------------------
 AddFrame = LabelFrame(root,padx=10,pady=10)
 AddFrame.pack(padx=10,pady=10)
@@ -144,5 +140,6 @@ AddBtn.grid(row=1,column=3,padx=10,sticky="ew")
 SessionFrame.pack(padx=10,pady=10,)
 
 iniBtns()
+addZoomPath()
 
 root.mainloop()

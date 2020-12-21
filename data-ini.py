@@ -5,5 +5,5 @@ abspath = pathlib.Path("data.dat").absolute()
 def safe(array):
     pickle.dump(array,open(str(abspath),"wb"))
 
-ini = [[],[],[]]
+ini = [[],[],[],[]]
 safe(ini)
