@@ -31,10 +31,11 @@ def load():
 
 def addZoomPath():
     data = load()
-    if not data[3] or data[3][0] == '':
-        filename = askopenfilename(initialdir= "/", title="Select Zoom.exe", filetypes = ((".exe","*.exe"),("all","*.*"))) 
-        data[3].append(filename) 
-        safe(data)
+    if not data[3]:
+        filename = askopenfilename(initialdir= "/Zoom", title="Select Zoom.exe", filetypes = ((".exe","*.exe"),("all","*.*"))) 
+        if(not filename == ''):
+            data[3].append(filename) 
+            safe(data)
 
 def waitfor(img):
     while(not pyautogui.locateCenterOnScreen(img ,confidence=0.8)):
