@@ -8,10 +8,19 @@ import subprocess
 import time
 import pyautogui
 
+
 root = Tk(className="zoom-desk")
 
 btn = [] #creates list to store the buttons in
 x = [] #creates list to store the x buttons in
+
+
+#####bei scripstart Zoom öffnen
+#####if beitreten drücken erkannt pyautogui
+#####automatisch kennwort etc füllen
+
+
+
 
 SessionFrame = LabelFrame(root,padx=10,pady=10)
 
@@ -33,31 +42,35 @@ def addZoomPath():
         data[3].append(filename) 
         safe(data)
 
+def waitfor(img):
+    while(not pyautogui.locateCenterOnScreen(img ,confidence=0.8)):
+        time.sleep(0.1)
+        print("here")
 
 
 ##############ZoomCode####################
 def zoomClass(meet_id, password):
     data = load()
-    pyautogui.press('ESC',interval=0.2)
-
+    
+    #need to kill task to stay everytime in focus
+    os.system("taskkill /f /im zoom.exe")
+    time.sleep(1)
     subprocess.Popen(data[3][0],stdout=subprocess.PIPE)
     
-    time.sleep(1)
-    
+    waitfor('buttons\\wait_1.png')
+
     xy = pyautogui.locateCenterOnScreen('buttons\\join_button.png' ,confidence=0.8)
     pyautogui.moveTo(xy)
-    
-    12513526262
-    time.sleep(0.2)
-    pyautogui.moveTo(xy)
     pyautogui.click()
-    time.sleep(0.2)
+
+    time.sleep(1)
     
-    pyautogui.press('enter',interval=0.2)
+    pyautogui.press('enter',interval=0.4)
     pyautogui.write(meet_id)
-    pyautogui.press('enter',interval=0.2)
+    pyautogui.press('enter',interval=0.4)
+    time.sleep(0.8)
     pyautogui.write(password)
-    pyautogui.press('enter',interval=0.2)
+    pyautogui.press('enter',interval=0.4)
 
 
 #TODO index out of range BUG
